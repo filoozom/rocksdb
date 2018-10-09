@@ -78,7 +78,7 @@ install:
       docker exec -t build sh -c "cd /src && npm i"
     fi
 
-test:
+script:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]
     then
