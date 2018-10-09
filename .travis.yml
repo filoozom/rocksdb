@@ -101,8 +101,6 @@ before_install:
     then
       if [ ! -z "$ARCH" ]
       then
-        NODE="$ARCH/$NODE"
-
         docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
         mkdir docker
@@ -110,12 +108,12 @@ before_install:
 
         wget -N https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VER}/x86_64_qemu-${QEMU_ARCH}-static.tar.gz
 
-        echo "FROM $NODE" >> Dockerfile
+        echo "FROM $ARCH/node:$NODE-$OS" >> Dockerfile
         echo "ADD x86_64_qemu-$QEMU_ARCH-static.tar.gz /usr/bin">> Dockerfile
 
-        NODE="$NODE-qemu"
+        NODE="$NODE-$ARCH-qemu"
 
-        docker build -t $NODE .
+        docker build -t $NODE-$OS .
       fi
 
       docker run -dt --name build -e PREBUILD_TOKEN=$PREBUILD_TOKEN -v $TRAVIS_BUILD_DIR:/src node:$NODE-$OS
