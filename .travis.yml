@@ -1,18 +1,24 @@
-sudo: false
-
-language: node_js
-
-before_install:
-  - export JOBS=max
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export JOBS=4; fi
-
-os:
-  - osx
-  - linux
-
-node_js:
-  - 6
-  - 8
-  - 10
-
-after_success: npm run coverage
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      language: bash
+      services:
+        - docker
+      env:
+        - OS=jessie
+        - OS=alpine
+        - NODE=10
+        - NODE=8
+        - NODE=6
+      before_install:
+        - docker run node:$NODE-$OS
+    - os: osx
+      language: node_js
+      node_js:
+        - 6
+        - 8
+        - 10
+      after_success: npm run coverage
+      before_install:
+        - export JOBS=max
