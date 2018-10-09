@@ -17,12 +17,6 @@ matrix:
       services:
         - docker
       env: OS=alpine NODE=8 ARCH=arm32v6 QEMU_ARCH=arm
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=alpine NODE=6 ARCH=arm32v6 QEMU_ARCH=arm
 
     # OSX builds
     - os: osx
