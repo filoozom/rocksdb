@@ -59,13 +59,13 @@ before_install:
 
       if [[ "$OS" == "alpine" ]]
       then
-        docker exec build sh -c "apk add --no-cache libtool autoconf"
+        docker exec -t build sh -c "apk add --no-cache build-base libtool autoconf automake"
       fi
 
       if [[ "$OS" == "jessie" ]]
       then
-        docker exec build sh -c "apt update"
-        docker exec build sh -c "apt install -y libtool"
+        docker exec -t build sh -c "apt update"
+        docker exec -t build sh -c "apt install -y libtool"
       fi
     fi
 
@@ -75,7 +75,7 @@ install:
     then
       npm i
     else
-      docker exec build sh -c "cd /src && npm i"
+      docker exec -t build sh -c "cd /src && npm i"
     fi
 
 test:
@@ -84,7 +84,7 @@ test:
     then
       npm test
     else
-      docker exec build sh -c "cd /src && npm test"
+      docker exec -t build sh -c "cd /src && npm test"
     fi
 
 after_success:
@@ -93,5 +93,5 @@ after_success:
     then
       npm run coverage
     else
-      docker exec build sh -c "cd /src && npm run coverage"
+      docker exec -t build sh -c "cd /src && npm run coverage"
     fi
