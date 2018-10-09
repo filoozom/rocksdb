@@ -75,7 +75,7 @@ install:
     then
       npm i
     else
-      docker exec -t build sh -c "cd /src && npm i"
+      docker exec -t build sh -c "cd /src && npm i && ./node_modules/.bin/node-gyp rebuild"
     fi
 
 script:
