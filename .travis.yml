@@ -40,6 +40,46 @@ matrix:
         - docker
       env: OS=alpine NODE=6
 
+    # Jessie arm32v6 containers
+    - os: linux
+      language: bash
+      sudo: true
+      services:
+        - docker
+      env: OS=jessie NODE=10 ARCH=arm32v6
+    - os: linux
+      language: bash
+      sudo: true
+      services:
+        - docker
+      env: OS=jessie NODE=8 ARCH=arm32v6
+    - os: linux
+      language: bash
+      sudo: true
+      services:
+        - docker
+      env: OS=jessie NODE=6 ARCH=arm32v6
+
+    # Alpine containers
+    - os: linux
+      language: bash
+      sudo: true
+      services:
+        - docker
+      env: OS=alpine NODE=10 ARCH=arm32v6
+    - os: linux
+      language: bash
+      sudo: true
+      services:
+        - docker
+      env: OS=alpine NODE=8 ARCH=arm32v6
+    - os: linux
+      language: bash
+      sudo: true
+      services:
+        - docker
+      env: OS=alpine NODE=6 ARCH=arm32v6
+
     # OSX builds
     - os: osx
       language: node_js
@@ -55,6 +95,11 @@ before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]
     then
+      if [ ! -z "$ARCH" ]
+      then
+        NODE="$ARCH/$NODE"
+      fi
+
       docker run -dt --name build -e PREBUILD_TOKEN=$PREBUILD_TOKEN -v $TRAVIS_BUILD_DIR:/src node:$NODE-$OS
 
       if [[ "$OS" == "alpine" ]]
