@@ -65,7 +65,7 @@ before_install:
       if [[ "$OS" == "jessie" ]]
       then
         docker exec -t build sh -c "apt update"
-        docker exec -t build sh -c "apt install -y libtool"
+        docker exec -t build sh -c "apt install -y build-essential libtool autoconf automake python"
       fi
     fi
 
