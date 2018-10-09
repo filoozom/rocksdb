@@ -4,46 +4,6 @@ env:
 
 matrix:
   include:
-    # Jessie containers
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=jessie NODE=10
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=jessie NODE=8
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=jessie NODE=6
-
-    # Alpine containers
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=alpine NODE=10
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=alpine NODE=8
-    - os: linux
-      language: bash
-      sudo: true
-      services:
-        - docker
-      env: OS=alpine NODE=6
-
     # Jessie arm32v6 containers
     - os: linux
       language: bash
