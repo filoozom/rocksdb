@@ -73,7 +73,7 @@ before_install:
 
         NODE="$NODE-$ARCH-qemu"
 
-        docker build -t $NODE-$OS .
+        docker build -t node:$NODE-$OS .
       fi
 
       docker run -dt --name build -e PREBUILD_TOKEN=$PREBUILD_TOKEN -v $TRAVIS_BUILD_DIR:/src node:$NODE-$OS
