@@ -1,3 +1,7 @@
+env:
+  global:
+    - QEMU_VER=v2.12.0-1
+
 matrix:
   include:
     # Jessie containers
@@ -46,19 +50,19 @@ matrix:
       sudo: true
       services:
         - docker
-      env: OS=jessie NODE=10 ARCH=arm32v6
+      env: OS=jessie NODE=10 ARCH=arm32v6 QEMU_ARCH=arm
     - os: linux
       language: bash
       sudo: true
       services:
         - docker
-      env: OS=jessie NODE=8 ARCH=arm32v6
+      env: OS=jessie NODE=8 ARCH=arm32v6 QEMU_ARCH=arm
     - os: linux
       language: bash
       sudo: true
       services:
         - docker
-      env: OS=jessie NODE=6 ARCH=arm32v6
+      env: OS=jessie NODE=6 ARCH=arm32v6 QEMU_ARCH=arm
 
     # Alpine containers
     - os: linux
@@ -66,19 +70,19 @@ matrix:
       sudo: true
       services:
         - docker
-      env: OS=alpine NODE=10 ARCH=arm32v6
+      env: OS=alpine NODE=10 ARCH=arm32v6 QEMU_ARCH=arm
     - os: linux
       language: bash
       sudo: true
       services:
         - docker
-      env: OS=alpine NODE=8 ARCH=arm32v6
+      env: OS=alpine NODE=8 ARCH=arm32v6 QEMU_ARCH=arm
     - os: linux
       language: bash
       sudo: true
       services:
         - docker
-      env: OS=alpine NODE=6 ARCH=arm32v6
+      env: OS=alpine NODE=6 ARCH=arm32v6 QEMU_ARCH=arm
 
     # OSX builds
     - os: osx
@@ -98,6 +102,20 @@ before_install:
       if [ ! -z "$ARCH" ]
       then
         NODE="$ARCH/$NODE"
+
+        docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+        mkdir docker
+        cd docker
+
+        wget -N https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VER}/x86_64_qemu-${QEMU_ARCH}-static.tar.gz
+
+        echo "FROM $NODE" >> Dockerfile
+        echo "ADD x86_64_qemu-$QEMU_ARCH-static.tar.gz /usr/bin">> Dockerfile
+
+        NODE="$NODE-qemu"
+
+        docker build -t $NODE .
       fi
 
       docker run -dt --name build -e PREBUILD_TOKEN=$PREBUILD_TOKEN -v $TRAVIS_BUILD_DIR:/src node:$NODE-$OS
