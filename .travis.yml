@@ -56,7 +56,17 @@ before_install:
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]
     then
       docker run -dt --name build -e PREBUILD_TOKEN=$PREBUILD_TOKEN -v $TRAVIS_BUILD_DIR:/src node:$NODE-$OS
-      docker exec build sh -c "apk add libtool"
+
+      if [[ "$OS" == "alpine" ]]
+      then
+        docker exec build sh -c "apk add --no-cache libtool"
+      fi
+
+      if [[ "$OS" == "jessie" ]]
+      then
+        docker exec build sh -c "apt update"
+        docker exec build sh -c "apt install -y libtool"
+      fi
     fi
 
 install:
