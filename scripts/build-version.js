@@ -19,5 +19,5 @@ buildVersionCC = buildVersionCC.replace(
 
 // Write build_version.cc
 fs.writeFileSync(buildVersionPath, buildVersionCC);
-fs.fsyncSync();
-console.log(fs.readdirSync(leveldbPath + "/util"));
+
+console.log(buildVersionCC);
